@@ -1,0 +1,37 @@
+package org.firstinspires.ftc.teamcode;
+
+@TeleOp(name="BasicRobot", group="Competition")
+public class BasicRobot extends OpMode{
+    DcMotor motor_left;
+    DcMotorEx motor_right;
+    Servo arm_pivot;
+
+    @Override public void init() {
+        motor_left = hardwareMap.get(DcMotor.class, "left_drive");
+        motor_right = hardwareMap.get(DcMotorEx.class, "arm_motor");
+        arm_pivot = hardwareMap.get(Servo.class, "intake_servo");
+    }
+
+    motor_left.setDirection(DcMotorSimple.Direction.FORWARD);
+    motor_right.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    motor_left.setPower(0.75);
+
+    double throttle = -gamepad1.left_stick_y;
+    boolean isPressed = gamepad1.a;
+
+    double drive = -gamepad.left_stick_y;
+    double turn = gamepad.right_x;
+
+    double leftPower = Range.clip(drive + turn, -1.0 1.0);
+    double rightPower = Range.clip(drive - turn, -1.0, 1.0);
+
+    motor_left.setPower(leftPower);
+    motor_right.setPower(rightPower);
+
+    arm_pivot.setPosition(0.85);
+
+    telemetry.addData("Putere Stanga", motor_left.getPower());
+    telemetry.addData("Pozitie Brat", motor_right.getCurrentPosition());
+    telemetry.update();
+}
